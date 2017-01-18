@@ -37,5 +37,24 @@ namespace GraphicModeling
 
         public Coord[] Coords;
 
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+
+            sb.Append("Points: ");
+            foreach (var c in Coords)
+            {
+                sb.Append(c.ToString());
+                sb.Append(' ');
+            }
+            sb.Append('\n');
+
+            sb.Append("Perimeter: ");
+            sb.AppendLine(Perimeter.ToString());
+            sb.Append("Area: ");
+            sb.AppendLine(Area.ToString());
+
+            return sb.ToString();
+        }
     }
 }

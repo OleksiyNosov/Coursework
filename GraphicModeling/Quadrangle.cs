@@ -26,5 +26,15 @@ namespace GraphicModeling
                     Coord.Parse(inputs[4],inputs[5]),
                     Coord.Parse(inputs[6],inputs[7]));
         }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("Quadrangle");
+            sb.Append(base.ToString());
+
+            return sb.ToString();
+        }
     }
 }

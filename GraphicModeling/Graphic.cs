@@ -65,6 +65,24 @@ namespace GraphicModeling
                 });
         }
 
+        public void DrawFull(Quadrangle q)
+        {
+            DrawDiagonals(q);
+
+            Draw(q, Brushes.DodgerBlue, 3, Brushes.Transparent);
+        }
+
+        private void DrawDiagonals(Quadrangle q)
+        {
+            DrawDiagonal(q, 0);
+            DrawDiagonal(q, 1);
+        }
+
+        private void DrawDiagonal(Quadrangle q, int i)
+        {
+            DrawLine(q.Coords[i], q.Coords[(i + 2) % 4], Brushes.MediumPurple);
+        }
+
         private void DrawMedians(Triangle t)
         {
             for (int i = 0; i < 3; i++)
@@ -104,7 +122,6 @@ namespace GraphicModeling
 
         private void DrawHeight(Triangle t, int i)
         {
-
             throw new NotImplementedException();
         }
     }

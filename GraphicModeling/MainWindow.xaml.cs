@@ -35,6 +35,7 @@ namespace GraphicModeling
         public MainWindow()
         {
             InitializeComponent();
+            Show();
 
             var triangles = DataReader.GetData("triangles.txt");
             var quadrangles = DataReader.GetData("quadrangles.txt");
@@ -51,6 +52,15 @@ namespace GraphicModeling
             var minQuadrangleyByArea = GetByArea(quadrangles, (a, b) => a < b);
 
             graphic.DrawFull(trianglesWithSmallArea.OfType<Triangle>().ToList());
+            graphic.DrawFull(minQuadrangleyByArea as Quadrangle);
+
+            var sb = new StringBuilder();
+
+            triangles.ForEach(t => sb.AppendLine(t.ToString()));
+            quadrangles.ForEach(q => sb.AppendLine(q.ToString()));
+
+            
+            MessageBox.Show(sb.ToString());
 
         }
 

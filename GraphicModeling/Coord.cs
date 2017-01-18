@@ -48,5 +48,18 @@ namespace GraphicModeling
         {
             return new Coord(double.Parse(x), double.Parse(y));
         }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+
+            sb.Append('(');
+            sb.Append(X);
+            sb.Append(';');
+            sb.Append(Y);
+            sb.Append(')');
+
+            return sb.ToString();
+        }
     }
 }
