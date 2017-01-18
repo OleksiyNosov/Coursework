@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,33 +38,53 @@ namespace GraphicModeling
             InitializeComponent();
             Show();
 
+            // Read data from file
             var triangles = DataReader.GetData("triangles.txt");
             var quadrangles = DataReader.GetData("quadrangles.txt");
 
+            // Creating graphic variable in order to draw shapes
             var graphic = new Graphic(canvas);
 
+            // Drawing all triangles
             graphic.Draw(triangles);
+            // Drawing all quadrangles
             graphic.Draw(quadrangles);
 
+            // Getting max quadrangley by area
             var maxQuadrangleyByArea = GetByArea(quadrangles, (a, b) => a > b);
 
+            // Getting a list of shapes with area smaller than some number
             var trianglesWithSmallArea = triangles.Where(t => t.Area < maxQuadrangleyByArea.Area / 2).ToList();
 
+            // Getting min quadrangley by area
             var minQuadrangleyByArea = GetByArea(quadrangles, (a, b) => a < b);
 
             graphic.DrawFull(trianglesWithSmallArea.OfType<Triangle>().ToList());
             graphic.DrawFull(minQuadrangleyByArea as Quadrangle);
 
+
+            // Combine all info about shapes into one string
             var sb = new StringBuilder();
 
             triangles.ForEach(t => sb.AppendLine(t.ToString()));
             quadrangles.ForEach(q => sb.AppendLine(q.ToString()));
 
-            
-            MessageBox.Show(sb.ToString());
+            var shapesInfo = sb.ToString();
 
+            // Show shapes info
+            MessageBox.Show(shapesInfo);
+
+            // Write shapes info into a file
+            using (var sw = new StreamWriter("ShapesInfo.txt"))
+                sw.Write(shapesInfo);
         }
 
+        /// <summary>
+        /// Returns shpe from list by specific function
+        /// </summary>
+        /// <param name="shapes">List of given shapes</param>
+        /// <param name="compare">Logic function that compare two areas</param>
+        /// <returns>Return shape with mostly satisfied given logic function</returns>
         private Shape GetByArea(List<Shape> shapes, Func<double, double, bool> compare)
         {
             var maxShapeByArea = shapes.First();
