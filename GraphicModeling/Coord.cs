@@ -33,11 +33,17 @@ namespace GraphicModeling
                     .VectorLength;
         }
 
-        public Coord Between(Coord next, double ratio = 0.5)
+        public Coord Between(Coord next)
         {
-            return new Coord((this.X + next.X) * ratio, (this.Y + next.Y) * ratio);
+            return new Coord((this.X + next.X) * 0.5, (this.Y + next.Y) * 0.5);
         }
-        
+        public Coord BetweenWithRatio(Coord next, double numerator, double denominator)
+        {
+            var ratio = numerator / (numerator + denominator);
+
+            return new Coord(X + ratio * (next.X - X), Y + ratio * (next.Y - Y));
+        }
+
         public static Coord Parse(string x, string y)
         {
             return new Coord(double.Parse(x), double.Parse(y));

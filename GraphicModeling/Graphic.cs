@@ -45,26 +45,12 @@ namespace GraphicModeling
             foreach (var t in triangles)
             {
                 DrawMedians(t);
-                // DrawBisects(t);
+                DrawBisects(t);
                 // DrawHeights(t);
 
                 Draw(t, Brushes.Crimson, 3, Brushes.Transparent);
             }
-        }
-
-        private void DrawMedians(Triangle t)
-        {
-            for (int i = 0; i < 3; i++)
-                DrawMedian(t, i);
-        }
-
-        private void DrawMedian(Triangle t, int i)
-        {
-            DrawLine(
-                t.Coords[i], 
-                t.Coords[(i + 1) % 3].Between(t.Coords[(i + 2) % 3]),
-                Brushes.Orange);
-        }
+        }        
 
         private void DrawLine(Coord coord1, Coord coord2, Brush stroke)
         {
@@ -79,13 +65,46 @@ namespace GraphicModeling
                 });
         }
 
+        private void DrawMedians(Triangle t)
+        {
+            for (int i = 0; i < 3; i++)
+                DrawMedian(t, i);
+        }
+
+        private void DrawMedian(Triangle t, int i)
+        {
+            DrawLine(
+                t.Coords[i],
+                t.Coords[(i + 1) % 3].Between(t.Coords[(i + 2) % 3]),
+                Brushes.Orange);
+        }
+
         private void DrawBisects(Triangle t)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < 3; i++)
+                DrawBisect(t, i);
+        }
+
+        private void DrawBisect(Triangle t, int i)
+        {
+            DrawLine(
+                t.Coords[i],
+                t.Coords[(i + 1) % 3].BetweenWithRatio(
+                    t.Coords[(i + 2) % 3],
+                    t.Coords[i].DistanceTo(t.Coords[(i + 1) % 3]),
+                    t.Coords[(i + 2) % 3].DistanceTo(t.Coords[i])),
+                Brushes.Green);
         }
 
         private void DrawHeights(Triangle t)
         {
+            for (int i = 0; i < 3; i++)
+                DrawHeight(t, i);
+        }
+
+        private void DrawHeight(Triangle t, int i)
+        {
+
             throw new NotImplementedException();
         }
     }
