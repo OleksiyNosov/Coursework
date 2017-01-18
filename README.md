@@ -1,7 +1,7 @@
 # Coursework
 Nothing special, just a simple college coursework.
 
-Here some tasks in Ukrainian:
+Here is some tasks in Ukrainian:
 
   У першому файлі задано координати вершин прямокутників.
   У другому файлі задано координати вершин трикутників.
