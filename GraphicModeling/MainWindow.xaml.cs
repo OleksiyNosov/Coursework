@@ -80,7 +80,7 @@ namespace GraphicModeling
         }
 
         /// <summary>
-        /// Returns shpe from list by specific function
+        /// Returns shape from list by specific function
         /// </summary>
         /// <param name="shapes">List of given shapes</param>
         /// <param name="compare">Logic function that compare two areas</param>

@@ -24,8 +24,8 @@ namespace GraphicModeling
             polyline.Fill = fill;
 
             foreach (var c in shape.Coords)
-                polyline.Points.Add(new System.Windows.Point(c.X, c.Y));
-            polyline.Points.Add(new System.Windows.Point(shape.Coords[0].X, shape.Coords[0].Y));
+                polyline.Points.Add(c.ToPoint());
+            polyline.Points.Add(shape.Coords[0].ToPoint());
 
             canvas.Children.Add(polyline);
         }

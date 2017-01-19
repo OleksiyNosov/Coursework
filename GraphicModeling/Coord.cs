@@ -49,6 +49,11 @@ namespace GraphicModeling
             return new Coord(double.Parse(x), double.Parse(y));
         }
 
+        public Point ToPoint()
+        {
+            return new Point(X, Y);
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
