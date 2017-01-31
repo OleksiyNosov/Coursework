@@ -5,8 +5,94 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphicModeling"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="750">
-    <Grid Name="grid">
-        <Canvas Name="canvas"></Canvas>        
+        Title="MainWindow" 
+        Height="350" Width="250"
+        ResizeMode="NoResize">
+    
+    <Window.Resources>
+        <Style x:Key="DefBtnStyleMainMenu" TargetType="Button">
+            <Setter Property="MaxWidth" Value="200"></Setter>
+            <Setter Property="MaxHeight" Value="30"></Setter>
+        </Style>
+        <Style x:Key="DefBtnStyleTextEditor" TargetType="Button">
+            <Setter Property="MinWidth" Value="50"></Setter>
+        </Style>
+    </Window.Resources>   
+
+    <Grid>
+        <Grid Name="menu" Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" Content="Run"
+                    Style="{StaticResource DefBtnStyleMainMenu}"
+                    Click="ButtonRun_Click"></Button>
+            <Button Grid.Row="1" Content="Open text editor"
+                    Style="{StaticResource DefBtnStyleMainMenu}"
+                    Click="ButtonTextEditor_Click"></Button>
+            <Button Grid.Row="2" Content="Open source code"
+                    Style="{StaticResource DefBtnStyleMainMenu}"></Button>
+            <Button Grid.Row="3" Content="About program"
+                    Style="{StaticResource DefBtnStyleMainMenu}"></Button>
+            <Button Grid.Row="4" Content="About author"
+                    Style="{StaticResource DefBtnStyleMainMenu}"></Button>
+            <Button Grid.Row="5" Content="Exit"
+                    Style="{StaticResource DefBtnStyleMainMenu}"
+                    Click="ButtonExit_Click"></Button>
+
+
+        </Grid>
+        <Grid Name="mainProgram" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Button Style="{StaticResource DefBtnStyleTextEditor}" 
+                        Content="Back"
+                        Click="ButtonMainProgramBack_Click"></Button>
+                <Button Style="{StaticResource DefBtnStyleTextEditor}" 
+                        Content="Info"
+                        Click="ButtonShapesInfo_Click"></Button>
+            </StackPanel>
+
+            <Canvas Name="canvas"></Canvas>
+        </Grid>
+        <Grid Name="textEditor" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Button Style="{StaticResource DefBtnStyleTextEditor}" 
+                        Content="Back"
+                        Click="ButtonTextEditorBack_Click"></Button>
+                <Button Style="{StaticResource DefBtnStyleTextEditor}" Content="Save"></Button>
+            </StackPanel>
+            
+            
+            <RichTextBox Grid.Row="1" Name="richTextEditor"
+                         IsReadOnly="False"></RichTextBox>
+        </Grid>
+        <Grid Name="sourceCode" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Button Style="{StaticResource DefBtnStyleTextEditor}" Content="Back"></Button>
+            </StackPanel>
+
+            <RichTextBox Grid.Row="1"></RichTextBox>
+        </Grid>
     </Grid>
 </Window>

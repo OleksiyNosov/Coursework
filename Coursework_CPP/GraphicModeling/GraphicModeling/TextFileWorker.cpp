@@ -11,3 +11,14 @@ TextFileWorker::TextFileWorker(string filename)
 TextFileWorker::~TextFileWorker()
 {
 }
+
+vector<Shape>* TextFileWorker::GetShapes()
+{
+	auto shapes = new vector<Shape>();
+
+	freopen("input.txt", "r", stdin);
+
+	
+
+	return shapes;
+}

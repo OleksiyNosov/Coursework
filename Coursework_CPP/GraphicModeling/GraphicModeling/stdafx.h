@@ -18,7 +18,10 @@
 #include <tchar.h>
 #include <string>
 #include <iostream>
+#include <array>
+#include <vector>
 
 #include "TextFileWorker.h"
+#include "Shape.h"
 
 // TODO: reference additional headers your program requires here

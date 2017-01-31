@@ -37,7 +37,7 @@ namespace GraphicModeling
 
         public void Draw(List<Shape> shapes)
         {
-            shapes.ForEach(s => Draw(s));
+            shapes.ForEach(Draw);
         }
 
         public void DrawFull(List<Triangle> triangles)

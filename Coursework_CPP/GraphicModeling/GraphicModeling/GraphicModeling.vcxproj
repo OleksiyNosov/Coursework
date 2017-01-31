@@ -141,6 +141,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Coord.h" />
     <ClInclude Include="GraphicModeling.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Shape.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="TextFileWorker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Coord.cpp" />
     <ClCompile Include="GraphicModeling.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="stdafx.cpp">

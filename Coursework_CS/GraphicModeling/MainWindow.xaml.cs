@@ -33,50 +33,12 @@ namespace GraphicModeling
     /// </summary>
     public partial class MainWindow : Window
     {
+        string shapesInfo = string.Empty;
+        string fileName = "Shapes.txt";
+
         public MainWindow()
         {
-            InitializeComponent();
-            Show();
-
-            // Read data from file
-            var triangles = DataReader.GetData("triangles.txt");
-            var quadrangles = DataReader.GetData("quadrangles.txt");
-
-            // Creating graphic variable in order to draw shapes
-            var graphic = new Graphic(canvas);
-
-            // Drawing all triangles
-            graphic.Draw(triangles);
-            // Drawing all quadrangles
-            graphic.Draw(quadrangles);
-
-            // Getting max quadrangley by area
-            var maxQuadrangleyByArea = GetByArea(quadrangles, (a, b) => a > b);
-
-            // Getting a list of shapes with area smaller than some number
-            var trianglesWithSmallArea = triangles.Where(t => t.Area < maxQuadrangleyByArea.Area / 2).ToList();
-
-            // Getting min quadrangley by area
-            var minQuadrangleyByArea = GetByArea(quadrangles, (a, b) => a < b);
-
-            graphic.DrawFull(trianglesWithSmallArea.OfType<Triangle>().ToList());
-            graphic.DrawFull(minQuadrangleyByArea as Quadrangle);
-
-
-            // Combine all info about shapes into one string
-            var sb = new StringBuilder();
-
-            triangles.ForEach(t => sb.AppendLine(t.ToString()));
-            quadrangles.ForEach(q => sb.AppendLine(q.ToString()));
-
-            var shapesInfo = sb.ToString();
-
-            // Show shapes info
-            MessageBox.Show(shapesInfo);
-
-            // Write shapes info into a file
-            using (var sw = new StreamWriter("ShapesInfo.txt"))
-                sw.Write(shapesInfo);
+            InitializeComponent();            
         }
 
         /// <summary>
@@ -103,7 +65,106 @@ namespace GraphicModeling
             return maxShapeByArea;
         }
 
+        private void BackToMainMenu()
+        {
+            menu.Visibility = Visibility.Visible;
+
+            Height = 350;
+            Width = 250;
+
+            ResizeMode = ResizeMode.NoResize;
+        }
+
+        #region MainMenuEvents
+
+        private void ButtonRun_Click(object sender, RoutedEventArgs e)
+        {
+            menu.Visibility = Visibility.Hidden;
+            mainProgram.Visibility = Visibility.Visible;
+
+            ResizeMode = ResizeMode.CanResize;
+
+            Height = 350;
+            Width = 750;
+
+            // Read data from file
+            var shapes = DataReader.GetData(fileName);
+
+            // Creating graphic variable in order to draw shapes
+            var graphic = new Graphic(canvas);
+
+            // Drawing all triangles
+            graphic.Draw(shapes);
+            // Drawing all quadrangles
+            graphic.Draw(shapes);
+
+            // Getting max quadrangley by area
+            var maxQuadrangleyByArea = GetByArea(shapes.OfType<Quadrangle>().ToList<Shape>(), (a, b) => a > b);
+
+            // Getting a list of shapes with area smaller than some number
+            var trianglesWithSmallArea = shapes.OfType<Triangle>().ToList().Where(t => t.Area < maxQuadrangleyByArea.Area / 2).ToList();
+
+            // Getting min quadrangley by area
+            var minQuadrangleyByArea = GetByArea(shapes.OfType<Quadrangle>().ToList<Shape>(), (a, b) => a < b);
+
+            graphic.DrawFull(trianglesWithSmallArea.OfType<Triangle>().ToList());
+            graphic.DrawFull(minQuadrangleyByArea as Quadrangle);
+
+
+            // Combine all info about shapes into one string
+            var sb = new StringBuilder();
+
+            shapes.ForEach(t => sb.AppendLine(t.ToString()));
+
+            shapesInfo = sb.ToString();
+
+            // Write shapes info into a file
+            using (var sw = new StreamWriter("ShapesInfo.txt"))
+                sw.Write(shapesInfo);
+        }
+        private void ButtonTextEditor_Click(object sender, RoutedEventArgs e)
+        {
+            menu.Visibility = Visibility.Hidden;
+            textEditor.Visibility = Visibility.Visible;
+
+            ResizeMode = ResizeMode.CanResize;
+
+            Height = 550;
+            Width = 450;
+
+        }
+        private void ButtonExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        #endregion
+
+        #region MainProgramEvents
+
+        private void ButtonMainProgramBack_Click(object sender, RoutedEventArgs e)
+        {
+            mainProgram.Visibility = Visibility.Hidden;         
+            BackToMainMenu();
+        }
+
+        
+
+        private void ButtonShapesInfo_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(shapesInfo);
+        }
+
+
+        #endregion
+
+        #region TextEditorEvents
+
+        private void ButtonTextEditorBack_Click(object sender, RoutedEventArgs e)
+        {
+            textEditor.Visibility = Visibility.Hidden;
+            BackToMainMenu();
+        }
+        #endregion        
     }
-
-
 }

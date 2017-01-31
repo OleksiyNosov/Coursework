@@ -47,7 +47,7 @@ namespace GraphicModeling
                 sb.Append(c.ToString());
                 sb.Append(' ');
             }
-            sb.Append('\n');
+            sb.Append("\n\r");
 
             sb.Append("Perimeter: ");
             sb.AppendLine(Perimeter.ToString());
