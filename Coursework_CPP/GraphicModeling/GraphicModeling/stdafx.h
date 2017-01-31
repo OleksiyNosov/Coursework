@@ -16,6 +16,9 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+#include <string>
+#include <iostream>
 
+#include "TextFileWorker.h"
 
 // TODO: reference additional headers your program requires here
