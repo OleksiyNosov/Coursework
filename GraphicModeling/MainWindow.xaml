@@ -20,6 +20,7 @@
     </Window.Resources>   
 
     <Grid>
+        
         <Grid Name="menu" Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
@@ -37,7 +38,8 @@
                     Style="{StaticResource DefBtnStyleMainMenu}"
                     Click="ButtonTextEditor_Click"></Button>
             <Button Grid.Row="2" Content="Open source code"
-                    Style="{StaticResource DefBtnStyleMainMenu}"></Button>
+                    Style="{StaticResource DefBtnStyleMainMenu}"
+                    Click="ButtonSourceCode_Click"></Button>
             <Button Grid.Row="3" Content="About program"
                     Style="{StaticResource DefBtnStyleMainMenu}"></Button>
             <Button Grid.Row="4" Content="About author"
@@ -61,6 +63,9 @@
                 <Button Style="{StaticResource DefBtnStyleTextEditor}" 
                         Content="Info"
                         Click="ButtonShapesInfo_Click"></Button>
+                <Button Style="{StaticResource DefBtnStyleTextEditor}" 
+                        Content="Save"
+                        Click="ButtonShapesSave_Click"></Button>
             </StackPanel>
 
             <Canvas Name="canvas"></Canvas>
@@ -75,12 +80,20 @@
                 <Button Style="{StaticResource DefBtnStyleTextEditor}" 
                         Content="Back"
                         Click="ButtonTextEditorBack_Click"></Button>
-                <Button Style="{StaticResource DefBtnStyleTextEditor}" Content="Save"></Button>
+                <Button Style="{StaticResource DefBtnStyleTextEditor}" 
+                        Content="Save"
+                        Click="ButtonTextEditorSave_Click"></Button>
             </StackPanel>
             
             
-            <RichTextBox Grid.Row="1" Name="richTextEditor"
-                         IsReadOnly="False"></RichTextBox>
+            <RichTextBox Grid.Row="1" Name="richTextEditor" 
+                         IsReadOnly="False">
+                <RichTextBox.Resources>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0" />
+                    </Style>
+                </RichTextBox.Resources>
+            </RichTextBox>
         </Grid>
         <Grid Name="sourceCode" Visibility="Hidden">
             <Grid.RowDefinitions>

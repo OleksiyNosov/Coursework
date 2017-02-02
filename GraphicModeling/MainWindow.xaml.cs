@@ -34,7 +34,8 @@ namespace GraphicModeling
     public partial class MainWindow : Window
     {
         string shapesInfo = string.Empty;
-        string fileName = "Shapes.txt";
+        string dataFileName = "Shapes.txt";
+        string saveFileName = "ShapesInfo.txt";
 
         public MainWindow()
         {
@@ -88,9 +89,10 @@ namespace GraphicModeling
             Width = 750;
 
             // Read data from file
-            var shapes = DataReader.GetData(fileName);
+            var shapes = DataReader.GetData(dataFileName);
 
             // Creating graphic variable in order to draw shapes
+            canvas.Children.Clear();
             var graphic = new Graphic(canvas);
 
             // Drawing all triangles
@@ -116,11 +118,7 @@ namespace GraphicModeling
 
             shapes.ForEach(t => sb.AppendLine(t.ToString()));
 
-            shapesInfo = sb.ToString();
-
-            // Write shapes info into a file
-            using (var sw = new StreamWriter("ShapesInfo.txt"))
-                sw.Write(shapesInfo);
+            shapesInfo = sb.ToString();            
         }
         private void ButtonTextEditor_Click(object sender, RoutedEventArgs e)
         {
@@ -131,6 +129,11 @@ namespace GraphicModeling
 
             Height = 550;
             Width = 450;
+
+            richTextEditor.Document.Blocks.Clear();
+
+            using (var sr = new StreamReader(dataFileName))
+                richTextEditor.Document.Blocks.Add(new Paragraph(new Run(sr.ReadToEnd())));
 
         }
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
@@ -146,13 +149,18 @@ namespace GraphicModeling
         {
             mainProgram.Visibility = Visibility.Hidden;         
             BackToMainMenu();
-        }
-
-        
+        }        
 
         private void ButtonShapesInfo_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(shapesInfo);
+        }
+
+        private void ButtonShapesSave_Click(object sender, RoutedEventArgs e)
+        {
+            // Write shapes info into a file
+            using (var sw = new StreamWriter(saveFileName))
+                sw.Write(shapesInfo);
         }
 
 
@@ -165,6 +173,25 @@ namespace GraphicModeling
             textEditor.Visibility = Visibility.Hidden;
             BackToMainMenu();
         }
-        #endregion        
+        private void ButtonTextEditorSave_Click(object sender, RoutedEventArgs e)
+        {
+            // Write shapes info into a file
+            using (var sw = new StreamWriter(dataFileName))
+                sw.Write(
+                    new TextRange(
+                        richTextEditor.Document.ContentStart,
+                        richTextEditor.Document.ContentEnd)
+                            .Text);
+        }
+
+
+        #endregion
+
+        #region SourceCode
+        private void ButtonSourceCode_Click(object sender, RoutedEventArgs e)
+        {
+
+        } 
+        #endregion
     }
 }
