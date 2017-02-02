@@ -22,7 +22,7 @@ namespace GraphicModeling
                 var perimeter = 0d;
 
                 for (int i = 0; i < Coords.Length; i++)
-                    perimeter += this[i].DistanceTo(this[(i + 1) % Coords.Length]);
+                    perimeter += this[i].DistanceTo(this[i + 1]);
 
                 return perimeter;
             }
@@ -35,8 +35,8 @@ namespace GraphicModeling
                 var area = 0d;
 
                 for (int i = 0; i < Coords.Length; i++)
-                    area += this[i].X * this[(i + 1) % Coords.Length].Y
-                          - this[i].Y * this[(i + 1) % Coords.Length].X;
+                    area += this[i].X * this[i + 1].Y
+                          - this[i].Y * this[i + 1].X;
 
                 return Math.Abs(area / 2);
             }
