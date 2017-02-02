@@ -25,7 +25,7 @@ namespace GraphicModeling
 
             foreach (var c in shape.Coords)
                 polyline.Points.Add(c.ToPoint());
-            polyline.Points.Add(shape.Coords[0].ToPoint());
+            polyline.Points.Add(shape[0].ToPoint());
 
             canvas.Children.Add(polyline);
         }
@@ -80,7 +80,7 @@ namespace GraphicModeling
 
         private void DrawDiagonal(Quadrangle q, int i)
         {
-            DrawLine(q.Coords[i], q.Coords[(i + 2) % 4], Brushes.MediumPurple);
+            DrawLine(q[i], q[i + 2], Brushes.MediumPurple);
         }
 
         private void DrawMedians(Triangle t)
@@ -92,8 +92,8 @@ namespace GraphicModeling
         private void DrawMedian(Triangle t, int i)
         {
             DrawLine(
-                t.Coords[i],
-                t.Coords[(i + 1) % 3].Between(t.Coords[(i + 2) % 3]),
+                t[i],
+                t[i + 1].Between(t[i + 2]),
                 Brushes.Orange);
         }
 
@@ -106,11 +106,11 @@ namespace GraphicModeling
         private void DrawBisect(Triangle t, int i)
         {
             DrawLine(
-                t.Coords[i],
-                t.Coords[(i + 1) % 3].BetweenWithRatio(
-                    t.Coords[(i + 2) % 3],
-                    t.Coords[i].DistanceTo(t.Coords[(i + 1) % 3]),
-                    t.Coords[(i + 2) % 3].DistanceTo(t.Coords[i])),
+                t[i],
+                t[i + 1].BetweenWithRatio(
+                    t[i + 2],
+                    t[i].DistanceTo(t[i + 1]),
+                    t[i + 2].DistanceTo(t[i])),
                 Brushes.Green);
         }
 

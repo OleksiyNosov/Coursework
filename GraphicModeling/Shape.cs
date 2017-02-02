@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,12 @@ namespace GraphicModeling
 {
     public abstract class Shape
     {
+        public Coord this[int index]
+        {
+            get { return Coords[index % Coords.Length]; }
+            set { Coords[index % Coords.Length] = value; }
+        }
+
         public double Perimeter
         {
             get
@@ -15,7 +22,7 @@ namespace GraphicModeling
                 var perimeter = 0d;
 
                 for (int i = 0; i < Coords.Length; i++)
-                    perimeter += Coords[i].DistanceTo(Coords[(i + 1) % Coords.Length]);
+                    perimeter += this[i].DistanceTo(this[(i + 1) % Coords.Length]);
 
                 return perimeter;
             }
@@ -28,8 +35,8 @@ namespace GraphicModeling
                 var area = 0d;
 
                 for (int i = 0; i < Coords.Length; i++)
-                    area += Coords[i].X * Coords[(i + 1) % Coords.Length].Y
-                          - Coords[i].Y * Coords[(i + 1) % Coords.Length].X;
+                    area += this[i].X * this[(i + 1) % Coords.Length].Y
+                          - this[i].Y * this[(i + 1) % Coords.Length].X;
 
                 return Math.Abs(area / 2);
             }
