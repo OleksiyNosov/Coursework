@@ -9,20 +9,44 @@ namespace GraphicModeling
 {
     public abstract class Shape
     {
+        private bool isPerimeterUpdated = false;
+        private bool isAreaUpdated = false;
+
+        private Coord[] coords;
+        private double perimeter;
+        private double area;
+
+        public Coord[] Coords
+        {
+            get { return coords; }
+            set
+            {
+                coords = value;
+                
+                NotUpdated();
+            }
+        }              
+
         public Coord this[int index]
         {
             get { return Coords[index % Coords.Length]; }
-            set { Coords[index % Coords.Length] = value; }
+            set
+            {                
+                Coords[index % Coords.Length] = value;
+
+                NotUpdated();
+            }
         }
 
         public double Perimeter
         {
             get
             {
-                var perimeter = 0d;
-
-                for (int i = 0; i < Coords.Length; i++)
-                    perimeter += this[i].DistanceTo(this[i + 1]);
+                if ( ! isPerimeterUpdated)
+                {
+                    perimeter = CalcPerimeter();
+                    isPerimeterUpdated = true;
+                }
 
                 return perimeter;
             }
@@ -32,17 +56,40 @@ namespace GraphicModeling
         {
             get
             {
-                var area = 0d;
+                if ( ! isAreaUpdated)
+                {
+                    area = CalcArea();
+                    isAreaUpdated = true;
+                }
 
-                for (int i = 0; i < Coords.Length; i++)
-                    area += this[i].X * this[i + 1].Y
-                          - this[i].Y * this[i + 1].X;
-
-                return Math.Abs(area / 2);
+                return area;
             }
         }
 
-        public Coord[] Coords;
+        private void NotUpdated()
+        {
+            isAreaUpdated = isPerimeterUpdated = false;
+        }
+
+        private double CalcPerimeter()
+        {
+            var perimeter = 0d;
+
+            for (int i = 0; i < Coords.Length; i++)
+                perimeter += this[i].DistanceTo(this[i + 1]);
+
+            return perimeter;
+        }
+        private double CalcArea()
+        {
+            var area = 0d;
+
+            for (int i = 0; i < Coords.Length; i++)
+                area += this[i].X * this[i + 1].Y
+                      - this[i].Y * this[i + 1].X;
+
+            return Math.Abs(area / 2);
+        }
 
         public override string ToString()
         {

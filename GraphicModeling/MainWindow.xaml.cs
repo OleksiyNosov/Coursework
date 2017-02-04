@@ -42,30 +42,6 @@ namespace GraphicModeling
             InitializeComponent();            
         }
 
-        /// <summary>
-        /// Returns shape from list by specific function
-        /// </summary>
-        /// <param name="shapes">List of given shapes</param>
-        /// <param name="compare">Logic function that compare two areas</param>
-        /// <returns>Return shape with mostly satisfied given logic function</returns>
-        private Shape GetByArea(List<Shape> shapes, Func<double, double, bool> compare)
-        {
-            var maxShapeByArea = shapes.First();
-            var maxShapeArea = maxShapeByArea.Area;
-
-            foreach (var s in shapes)
-            {
-                var newShapeArea = s.Area;
-                if (compare(newShapeArea, maxShapeArea))
-                {
-                    maxShapeArea = newShapeArea;
-                    maxShapeByArea = s;
-                }
-            }
-
-            return maxShapeByArea;
-        }
-
         private void BackToMainMenu()
         {
             menu.Visibility = Visibility.Visible;
@@ -100,23 +76,29 @@ namespace GraphicModeling
             // Drawing all quadrangles
             graphic.Draw(shapes);
 
-            // Getting max quadrangley by area
-            var maxQuadrangleyByArea = GetByArea(shapes.OfType<Quadrangle>().ToList<Shape>(), (a, b) => a > b);
+            // Getting max quadrangle by area
+            var maxQuadrangleByArea = 
+                shapes.OfType<Quadrangle>().ToList()
+                .OrderByDescending(s => s.Area).First();
 
             // Getting a list of shapes with area smaller than some number
-            var trianglesWithSmallArea = shapes.OfType<Triangle>().ToList().Where(t => t.Area < maxQuadrangleyByArea.Area / 2).ToList();
+            var trianglesWithSmallArea = 
+                shapes.OfType<Triangle>().ToList()
+                .Where(t => t.Area < maxQuadrangleByArea.Area / 2).ToList();
 
-            // Getting min quadrangley by area
-            var minQuadrangleyByArea = GetByArea(shapes.OfType<Quadrangle>().ToList<Shape>(), (a, b) => a < b);
+            // Getting min quadrangle by area
+            var minQuadrangleByArea =
+                shapes.OfType<Quadrangle>().ToList()
+                .OrderBy(s => s.Area).First();
 
             graphic.DrawFull(trianglesWithSmallArea.OfType<Triangle>().ToList());
-            graphic.DrawFull(minQuadrangleyByArea as Quadrangle);
+            graphic.DrawFull(minQuadrangleByArea);
 
 
             // Combine all info about shapes into one string
             var sb = new StringBuilder();
 
-            shapes.ForEach(t => sb.AppendLine(t.ToString()));
+            shapes.ForEach(s => sb.AppendLine(s.ToString()));
 
             shapesInfo = sb.ToString();            
         }
