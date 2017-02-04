@@ -9,8 +9,18 @@ namespace GraphicModeling
 {
     public class Coord
     {
-        public double X { get; set; }
-        public double Y { get; set; }
+        private Point point;
+
+        public double X
+        {
+            get { return point.X; }
+            set { point.X = value; }
+        }
+        public double Y
+        {
+            get { return point.Y; }
+            set { point.Y = value; }
+        }
 
         public double VectorLength
         {
@@ -44,14 +54,20 @@ namespace GraphicModeling
             return new Coord(X + ratio * (next.X - X), Y + ratio * (next.Y - Y));
         }
 
+        public void Shift(Coord coord)
+        {
+            X += coord.X;
+            Y += coord.Y;
+        }
+
         public static Coord Parse(string x, string y)
         {
             return new Coord(double.Parse(x), double.Parse(y));
         }
 
-        public Point ToPoint()
+        public Point AsPoint()
         {
-            return new Point(X, Y);
+            return point;
         }
 
         public override string ToString()
@@ -66,5 +82,26 @@ namespace GraphicModeling
 
             return sb.ToString();
         }
+
+        #region Operator +
+        public static Coord operator +(Coord left, Coord right)
+        {
+            return
+                new Coord(
+                    left.X + right.X,
+                    left.Y + right.Y);
+        }
+        public static Coord operator +(Point left, Coord right)
+        {
+            return
+                new Coord(
+                    left.X + right.X,
+                    left.Y + right.Y);
+        }
+        public static Coord operator +(Coord left, Point right)
+        {
+            return right + left;
+        }
+        #endregion
     }
 }

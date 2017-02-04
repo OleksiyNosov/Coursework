@@ -61,46 +61,49 @@ namespace GraphicModeling
 
             ResizeMode = ResizeMode.CanResize;
 
-            Height = 350;
+            Height = 400;
             Width = 750;
 
             // Read data from file
-            var shapes = DataReader.GetData(dataFileName);
+            var shapeCtrls = ShapeControlFactory.Create(DataReader.GetData(dataFileName));
 
             // Creating graphic variable in order to draw shapes
             canvas.Children.Clear();
-            var graphic = new Graphic(canvas);
-
-            // Drawing all triangles
-            graphic.Draw(shapes);
-            // Drawing all quadrangles
-            graphic.Draw(shapes);
+            shapeCtrls.ForEach(s => canvas.Children.Add(s));
 
             // Getting max quadrangle by area
-            var maxQuadrangleByArea = 
-                shapes.OfType<Quadrangle>().ToList()
-                .OrderByDescending(s => s.Area).First();
+            var maxQuadrangleByArea =
+                shapeCtrls.OfType<QuadrangleControl>().ToList()
+                .OrderByDescending(s => s.Shape.Area).First();
 
             // Getting a list of shapes with area smaller than some number
-            var trianglesWithSmallArea = 
-                shapes.OfType<Triangle>().ToList()
-                .Where(t => t.Area < maxQuadrangleByArea.Area / 2).ToList();
+            var trianglesWithSmallArea =
+                shapeCtrls.OfType<TriangleControl>().ToList()
+                .Where(t => t.Shape.Area < maxQuadrangleByArea.Shape.Area / 2).ToList();
 
             // Getting min quadrangle by area
             var minQuadrangleByArea =
-                shapes.OfType<Quadrangle>().ToList()
-                .OrderBy(s => s.Area).First();
+                shapeCtrls.OfType<QuadrangleControl>().ToList()
+                .OrderBy(s => s.Shape.Area).First();
 
-            graphic.DrawFull(trianglesWithSmallArea.OfType<Triangle>().ToList());
-            graphic.DrawFull(minQuadrangleByArea);
+            trianglesWithSmallArea.ForEach(t =>
+            {
+                t.Stroke = Brushes.Crimson;
+                t.MediansColor = Brushes.Orange;
+                t.BisectsColor = Brushes.Green;
+                t.HeightsColor = Brushes.Pink;
+            });
 
+            // Set Diagonals color in smallest quadrangle
+            minQuadrangleByArea.Stroke = Brushes.DarkCyan;
+            minQuadrangleByArea.DiagonalsColor = Brushes.Violet;
 
             // Combine all info about shapes into one string
             var sb = new StringBuilder();
 
-            shapes.ForEach(s => sb.AppendLine(s.ToString()));
+            shapeCtrls.ForEach(s => sb.AppendLine(s.Shape.ToString()));
 
-            shapesInfo = sb.ToString();            
+            shapesInfo = sb.ToString();
         }
         private void ButtonTextEditor_Click(object sender, RoutedEventArgs e)
         {

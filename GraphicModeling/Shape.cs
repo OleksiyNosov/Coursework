@@ -23,10 +23,9 @@ namespace GraphicModeling
             {
                 coords = value;
                 
-                NotUpdated();
+                Updated(false);
             }
         }              
-
         public Coord this[int index]
         {
             get { return Coords[index % Coords.Length]; }
@@ -34,8 +33,13 @@ namespace GraphicModeling
             {                
                 Coords[index % Coords.Length] = value;
 
-                NotUpdated();
+                Updated(false);
             }
+        }
+
+        private void Updated(bool value)
+        {
+            isAreaUpdated = isPerimeterUpdated = value;
         }
 
         public double Perimeter
@@ -51,7 +55,6 @@ namespace GraphicModeling
                 return perimeter;
             }
         }
-
         public double Area
         {
             get
@@ -64,11 +67,6 @@ namespace GraphicModeling
 
                 return area;
             }
-        }
-
-        private void NotUpdated()
-        {
-            isAreaUpdated = isPerimeterUpdated = false;
         }
 
         private double CalcPerimeter()
@@ -90,6 +88,14 @@ namespace GraphicModeling
 
             return Math.Abs(area / 2);
         }
+
+        public void Shift(Coord shift)
+        {
+            foreach (var c in Coords)
+                c.Shift(shift);
+        }
+
+
 
         public override string ToString()
         {
