@@ -9,10 +9,13 @@ namespace GraphicModeling
     {
         public static List<Shape> GetData(string filePath)
         {
+            var shapes = new List<Shape>();
+
+            if ( ! File.Exists(filePath))
+                return shapes;
+
             using (var sr = new StreamReader(filePath))
             {
-                var shapes = new List<Shape>();
-
                 while ( ! sr.EndOfStream)
                 {
                     var inputs = sr.ReadLine().Split();

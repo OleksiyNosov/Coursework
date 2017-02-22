@@ -67,6 +67,9 @@ namespace GraphicModeling
             // Read data from file
             var shapeCtrls = ShapeControlFactory.Create(DataReader.GetData(dataFileName));
 
+            if (shapeCtrls.Count <= 0)
+                return;
+
             // Creating graphic variable in order to draw shapes
             canvas.Children.Clear();
             shapeCtrls.ForEach(s => canvas.Children.Add(s));
@@ -117,8 +120,9 @@ namespace GraphicModeling
 
             richTextEditor.Document.Blocks.Clear();
 
-            using (var sr = new StreamReader(dataFileName))
-                richTextEditor.Document.Blocks.Add(new Paragraph(new Run(sr.ReadToEnd())));
+            if (File.Exists(dataFileName))
+                using (var sr = new StreamReader(dataFileName))
+                    richTextEditor.Document.Blocks.Add(new Paragraph(new Run(sr.ReadToEnd())));
 
         }
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
