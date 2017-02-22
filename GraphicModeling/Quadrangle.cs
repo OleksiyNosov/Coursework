@@ -14,8 +14,27 @@ namespace GraphicModeling
         public Quadrangle(Coord topFirst, Coord topSecond, Coord topThird, Coord topFourth)
         {
             Coords = new Coord[] { topFirst, topSecond, topThird, topFourth };
+
+            OrderCoordsWithoutIntersecting();
         }
         public Quadrangle() : this(new Coord(), new Coord(), new Coord(), new Coord()) { }
+
+        private void OrderCoordsWithoutIntersecting()
+        {
+            for (int i = 0; i < Coords.Length; i++)
+            {
+                if (SLine.IsLinesIntersect(
+                        new SLine(this[i], this[i + 1]),
+                        new SLine(this[i + 2], this[i + 3])))
+                {
+                    // Swapping the coordinates
+                    var temp = this[i + 1];
+                    this[i + 1] = this[i + 2];
+                    this[i + 2] = temp;
+                }
+
+            }
+        }
 
         public static Quadrangle Parse(string[] inputs)
         {

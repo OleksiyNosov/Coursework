@@ -7,7 +7,7 @@ using System.Windows.Shapes;
 
 namespace GraphicModeling
 {
-    class Line
+    class SLine
     {
         private Coord start;
         private Coord end;
@@ -24,14 +24,14 @@ namespace GraphicModeling
         }
 
 
-        public Line(Coord start, Coord end)
+        public SLine(Coord start, Coord end)
         {
             Start = start;
             End = end;
         }
-        public Line() : this(new Coord(), new Coord()) { }
+        public SLine() : this(new Coord(), new Coord()) { }
 
-        public static bool DoLinesIntersect(Line line1, Line line2)
+        public static bool IsLinesIntersect(SLine line1, SLine line2)
         {
             return CrossProduct(line1.Start, line1.End, line2.Start) 
                 != CrossProduct(line1.Start, line1.End, line2.End) 
