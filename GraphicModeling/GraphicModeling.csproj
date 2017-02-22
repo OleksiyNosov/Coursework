@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Coord.cs" />
     <Compile Include="DataReader.cs" />
+    <Compile Include="Line.cs" />
     <Compile Include="Quadrangle.cs" />
     <Compile Include="QuadrangleControl.cs" />
     <Compile Include="Shape.cs" />
