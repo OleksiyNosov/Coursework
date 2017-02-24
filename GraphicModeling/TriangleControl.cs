@@ -92,7 +92,22 @@ namespace GraphicModeling
         }
         private void HeightToList(int i)
         {
-            // TODO: Heights code
+            // k = ((y2-y1) * (x3-x1) - (x2-x1) * (y3-y1)) / ((y2-y1)^2 + (x2-x1)^2)
+            var k = ((Shape[i + 2].Y - Shape[i + 1].Y) 
+                    *  (Shape[i + 0].X - Shape[i + 1].X)
+                    -  (Shape[i + 2].X - Shape[i + 1].X)
+                    *  (Shape[i + 0].Y - Shape[i + 1].Y))
+                    / (Math.Pow(Shape[i + 2].Y - Shape[i + 1].Y, 2)
+                    +  Math.Pow(Shape[i + 2].X - Shape[i + 1].X, 2));
+
+            var secondCoord = new Coord(
+                Shape[i].X - k * (Shape[i + 2].Y - Shape[i + 1].Y),
+                Shape[i].Y + k * (Shape[i + 2].X - Shape[i + 1].X));
+
+            heights.Add(
+                CreateLine(Shape[i], secondCoord));
+
+
         }
     }
 }
