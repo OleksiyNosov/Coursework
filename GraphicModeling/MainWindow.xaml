@@ -6,16 +6,24 @@
         xmlns:local="clr-namespace:GraphicModeling"
         mc:Ignorable="d"
         Title="MainWindow" 
-        Height="350" Width="250"
+        Height="325" Width="250"
         ResizeMode="NoResize">
     
     <Window.Resources>
         <Style x:Key="DefBtnStyleMainMenu" TargetType="Button">
             <Setter Property="MaxWidth" Value="200"></Setter>
-            <Setter Property="MaxHeight" Value="30"></Setter>
+            <Setter Property="MaxHeight" Value="33"></Setter>
         </Style>
         <Style x:Key="DefBtnStyleTextEditor" TargetType="Button">
             <Setter Property="MinWidth" Value="50"></Setter>
+        </Style>
+        <Style x:Key="LineTypeStyle" TargetType="Line">
+            <Setter Property="X1" Value="5"></Setter>
+            <Setter Property="Y1" Value="0"></Setter>
+            <Setter Property="X2" Value="95"></Setter>
+            <Setter Property="Y2" Value="0"></Setter>
+            <Setter Property="StrokeThickness" Value="2"></Setter>
+            <Setter Property="Margin" Value="5"></Setter>
         </Style>
     </Window.Resources>   
 
@@ -23,7 +31,6 @@
         
         <Grid Name="menu" Visibility="Visible">
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -37,14 +44,13 @@
             <Button Grid.Row="1" Content="Open text editor"
                     Style="{StaticResource DefBtnStyleMainMenu}"
                     Click="ButtonTextEditor_Click"></Button>
-            <Button Grid.Row="2" Content="Open source code"
-                    Style="{StaticResource DefBtnStyleMainMenu}"
-                    Click="ButtonSourceCode_Click"></Button>
-            <Button Grid.Row="3" Content="About program"
+            <Button Grid.Row="2" Content="About program"
+                    Click="ButtonAboutProgram_Click"
                     Style="{StaticResource DefBtnStyleMainMenu}"></Button>
-            <Button Grid.Row="4" Content="About author"
+            <Button Grid.Row="3" Content="About author"
+                    Click="ButtonAboutAuthor_Click"
                     Style="{StaticResource DefBtnStyleMainMenu}"></Button>
-            <Button Grid.Row="5" Content="Exit"
+            <Button Grid.Row="4" Content="Exit"
                     Style="{StaticResource DefBtnStyleMainMenu}"
                     Click="ButtonExit_Click"></Button>
 
@@ -56,10 +62,16 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="130"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" 
+                        Orientation="Horizontal">
                 <Button Style="{StaticResource DefBtnStyleTextEditor}" 
                         Content="Back"
-                        Click="ButtonMainProgramBack_Click"></Button>
+                        Click="ButtonBackToMain_Click"></Button>
                 <Button Style="{StaticResource DefBtnStyleTextEditor}" 
                         Content="Info"
                         Click="ButtonShapesInfo_Click"></Button>
@@ -68,7 +80,41 @@
                         Click="ButtonShapesSave_Click"></Button>
             </StackPanel>
 
-            <Canvas Name="canvas"></Canvas>
+            <Canvas Grid.Row="1" Grid.Column="0" 
+                    Name="canvas"></Canvas>
+
+            <StackPanel Grid.Row="0" Grid.Column="1"
+                        Grid.RowSpan="2" 
+                        Background="White">
+
+                <Label Content="Shapes:"></Label>
+                <Line Name="lineShapesColor" Stroke="Black"
+                      Style="{StaticResource LineTypeStyle}"></Line>
+                
+                <Label Content="Small Triangles"></Label>
+                <Line Name="lineTrianglesSmall" Stroke="Crimson"
+                    Style="{StaticResource LineTypeStyle}"></Line>
+                <StackPanel Margin="20,0,0,0">
+                    <Label Content="Bisects:"></Label>
+                    <Line Name="lineTrianglesSmallBisects" Stroke="Orange"
+                    Style="{StaticResource LineTypeStyle}"></Line>
+                    <Label Content="Medians:"></Label>
+                    <Line Name="lineTrianglesSmallMedians" Stroke="Green"
+                    Style="{StaticResource LineTypeStyle}"></Line>
+                    <Label Content="Altitudes:"></Label>
+                    <Line Name="lineTrianglesSmallHeights" Stroke="CornflowerBlue"
+                    Style="{StaticResource LineTypeStyle}"></Line>
+                </StackPanel>
+                
+                <Label Content="Small Quadranles:"></Label>
+                <Line Name="lineQuadranlesSmall" Stroke="DarkCyan"
+                    Style="{StaticResource LineTypeStyle}"></Line>
+                <StackPanel Margin="20,0,0,0">
+                    <Label Content="Diagonals:"></Label>
+                    <Line Name="lineQuadranlesSmallDiagonals" Stroke="Violet"
+                    Style="{StaticResource LineTypeStyle}"></Line>
+                </StackPanel>
+            </StackPanel>
         </Grid>
         <Grid Name="textEditor" Visibility="Hidden">
             <Grid.RowDefinitions>
@@ -79,7 +125,7 @@
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Button Style="{StaticResource DefBtnStyleTextEditor}" 
                         Content="Back"
-                        Click="ButtonTextEditorBack_Click"></Button>
+                        Click="ButtonBackToMain_Click"></Button>
                 <Button Style="{StaticResource DefBtnStyleTextEditor}" 
                         Content="Save"
                         Click="ButtonTextEditorSave_Click"></Button>
@@ -107,5 +153,24 @@
 
             <RichTextBox Grid.Row="1"></RichTextBox>
         </Grid>
+        <Grid Name="aboutProgram" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0"
+                        Orientation="Horizontal">
+                <Button Name="buttonAboutProgramBack"
+                        Content="Back"
+                        Style="{StaticResource DefBtnStyleTextEditor}"
+                        Click="ButtonBackToMain_Click"></Button>
+            </StackPanel>
+            <TextBlock Grid.Row="1"
+                       Margin="10"
+                       TextWrapping="WrapWithOverflow"
+                       Name="textBlockAboutProgram"></TextBlock>
+        </Grid>
+        
     </Grid>
 </Window>
