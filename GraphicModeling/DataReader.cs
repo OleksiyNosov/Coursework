@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace GraphicModeling
 {
-    public static class DataReader
+    public class DataReader
     {
         public static List<Shape> GetData(string filePath)
         {
