@@ -39,30 +39,41 @@ namespace GraphicModeling
 
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
+
+            SwitchToMainMenu();            
         }
 
-        private void BackToMainMenu()
+        private void SwitchToMainMenu()
         {
-            menu.Visibility = Visibility.Visible;
-
-            Height = 350;
-            Width = 250;
-
-            ResizeMode = ResizeMode.NoResize;
+            SwitchToWindow(menu, 350, 250, ResizeMode.NoResize);            
         }
+
+        private void SwitchToWindow(Grid grid, int height, int width, ResizeMode resizeMode)
+        {
+            HideAllWindows();
+
+            grid.Visibility = Visibility.Visible;
+            Height = height;
+            Width = width;
+            ResizeMode = resizeMode;
+        }
+
+        private void HideAllWindows()
+        {
+            menu.Visibility = Visibility.Hidden;
+            mainProgram.Visibility = Visibility.Hidden;
+            textEditor.Visibility = Visibility.Hidden;
+            aboutProgram.Visibility = Visibility.Hidden;
+        }
+
+
 
         #region MainMenuEvents
 
         private void ButtonRun_Click(object sender, RoutedEventArgs e)
         {
-            menu.Visibility = Visibility.Hidden;
-            mainProgram.Visibility = Visibility.Visible;
-
-            ResizeMode = ResizeMode.CanResize;
-
-            Height = 400;
-            Width = 750;
+            SwitchToWindow(mainProgram, 450, 900, ResizeMode.CanResize);
 
             // Read data from file
             var shapeCtrls = ShapeControlFactory.Create(DataReader.GetData(dataFileName));
@@ -91,32 +102,27 @@ namespace GraphicModeling
 
             trianglesWithSmallArea.ForEach(t =>
             {
-                t.Stroke = Brushes.Crimson;
-                t.MediansColor = Brushes.Orange;
-                t.BisectsColor = Brushes.Green;
-                t.HeightsColor = Brushes.Pink;
+                t.Stroke = lineTrianglesSmall.Stroke;
+                t.MediansColor = lineTrianglesSmallMedians.Stroke;
+                t.BisectsColor = lineTrianglesSmallBisects.Stroke;
+                t.HeightsColor = lineTrianglesSmallHeights.Stroke;
             });
 
             // Set Diagonals color in smallest quadrangle
-            minQuadrangleByArea.Stroke = Brushes.DarkCyan;
-            minQuadrangleByArea.DiagonalsColor = Brushes.Violet;
+            minQuadrangleByArea.Stroke = lineQuadranlesSmall.Stroke;
+            minQuadrangleByArea.DiagonalsColor = lineQuadranlesSmallDiagonals.Stroke;
 
             // Combine all info about shapes into one string
             var sb = new StringBuilder();
 
-            shapeCtrls.ForEach(s => sb.AppendLine(s.Shape.ToString()));
+            trianglesWithSmallArea.ForEach(s => sb.AppendLine(s.Shape.ToString()));
+            sb.AppendLine(minQuadrangleByArea.Shape.ToString());
 
             shapesInfo = sb.ToString();
         }
         private void ButtonTextEditor_Click(object sender, RoutedEventArgs e)
         {
-            menu.Visibility = Visibility.Hidden;
-            textEditor.Visibility = Visibility.Visible;
-
-            ResizeMode = ResizeMode.CanResize;
-
-            Height = 550;
-            Width = 450;
+            SwitchToWindow(textEditor, 550, 450, ResizeMode.CanResize);
 
             richTextEditor.Document.Blocks.Clear();
 
@@ -125,6 +131,27 @@ namespace GraphicModeling
                     richTextEditor.Document.Blocks.Add(new Paragraph(new Run(sr.ReadToEnd())));
 
         }
+
+        private void ButtonAboutProgram_Click(object sender, RoutedEventArgs e)
+        {
+            SwitchToWindow(aboutProgram, 350, 450, ResizeMode.CanResize);
+
+            textBlockAboutProgram.Text =
+                "Main tasks:\n\n" +
+                "1 - Read triangles and quadrangles data from file.\n\n" +
+                "2 - Select triangles with area smaller than hals of area of biggesst quadrangle.\n" +
+                "    2.1 - Plot bisects.\n" +
+                "    2.2 - Plot medians.\n" +
+                "    2.3 - Plot altitudes.\n\n" +
+                "3 - Select quadrangle with smallets area.\n" +
+                "    3.1 - Plot diagonals.\n";
+        }
+
+        private void ButtonAboutAuthor_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Full Name: Oleksiy Nosov\nEmail: oleksiynosov@gmail.com\nAll rights reserved.®\nVinnitsia 2017", "Author");
+        }
+
         private void ButtonExit_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -134,10 +161,9 @@ namespace GraphicModeling
 
         #region MainProgramEvents
 
-        private void ButtonMainProgramBack_Click(object sender, RoutedEventArgs e)
+        private void ButtonBackToMain_Click(object sender, RoutedEventArgs e)
         {
-            mainProgram.Visibility = Visibility.Hidden;         
-            BackToMainMenu();
+            SwitchToMainMenu();
         }        
 
         private void ButtonShapesInfo_Click(object sender, RoutedEventArgs e)
@@ -156,12 +182,7 @@ namespace GraphicModeling
         #endregion
 
         #region TextEditorEvents
-
-        private void ButtonTextEditorBack_Click(object sender, RoutedEventArgs e)
-        {
-            textEditor.Visibility = Visibility.Hidden;
-            BackToMainMenu();
-        }
+                
         private void ButtonTextEditorSave_Click(object sender, RoutedEventArgs e)
         {
             // Write shapes info into a file
@@ -176,11 +197,7 @@ namespace GraphicModeling
 
         #endregion
 
-        #region SourceCode
-        private void ButtonSourceCode_Click(object sender, RoutedEventArgs e)
-        {
 
-        } 
-        #endregion
+        
     }
 }
